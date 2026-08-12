@@ -1,0 +1,20 @@
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: restore-postgres-incident-124
+  namespace: velero
+spec:
+  # The name of the specific backup to restore from
+  backupName: daily-production-backup-20260812
+  
+  # Only restore the database namespace, ignore the rest of the backup
+  includedNamespaces:
+  - backend-api
+  
+  # Filter to only restore objects labeled with 'app: postgres'
+  labelSelector:
+    matchLabels:
+      app: postgres
+      
+  # Ensure persistent volumes are restored from the CSI snapshots
+  restorePVs: true

@@ -1,0 +1,17 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: daily-production-backup
+  namespace: velero
+spec:
+  # Standard cron expression: every day at 2:00 AM
+  schedule: "0 2 * * *"
+  template:
+    includedNamespaces:
+    - production
+    - backend-api
+    - frontend
+    # Snapshot Persistent Volumes using CSI
+    snapshotVolumes: true
+    # Keep backups for 30 days to meet RPO compliance
+    ttl: 720h0m0s
