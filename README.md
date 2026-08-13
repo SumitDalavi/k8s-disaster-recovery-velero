@@ -44,6 +44,106 @@ The alternative is relying solely on GitOps (ArgoCD) to rebuild a cluster. While
 └── README.md
 ```
 
+
+## ðŸ“‹ Prerequisites
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| [kubectl](https://kubernetes.io/docs/tasks/tools/) | >= 1.28 | Kubernetes CLI |
+| [kind](https://kind.sigs.k8s.io/) or [minikube](https://minikube.sigs.k8s.io/) | Latest | Local K8s cluster |
+| [Velero CLI](https://velero.io/docs/main/basic-install/) | >= 1.12 | Backup/restore CLI |
+| [Helm](https://helm.sh/) | >= 3.x | Package manager |
+| [MinIO](https://min.io/) (optional) | Latest | Local S3-compatible storage for backups |
+
+## ðŸš€ Step-by-Step Setup
+
+### Option A: Local Cluster (kind) with MinIO
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/SumitDalavi/k8s-disaster-recovery-velero.git
+cd k8s-disaster-recovery-velero
+
+# 2. Create a local cluster
+kind create cluster --name dr-lab
+
+# 3. Install MinIO as local backup storage
+kubectl create namespace velero
+helm repo add minio https://charts.min.io/
+helm install minio minio/minio --namespace velero --set resources.requests.memory=256Mi
+
+# 4. Install Velero with MinIO backend
+velero install \
+  --provider aws \
+  --plugins velero/velero-plugin-for-aws:v1.8.0 \
+  --bucket velero-backups \
+  --secret-file ./credentials-velero \
+  --backup-storage-location-config region=minio,s3ForcePathStyle=true,s3Url=http://minio.velero:9000 \
+  --use-volume-snapshots=false
+
+# 5. Deploy a sample application to backup
+kubectl create namespace demo-app
+kubectl run nginx --image=nginx --namespace=demo-app
+kubectl create configmap app-config --from-literal=env=production --namespace=demo-app
+```
+
+### Option B: Existing Cloud Cluster
+
+```bash
+# Use cloud-native storage (AWS S3, Azure Blob, GCS) instead of MinIO
+# Follow Velero's cloud provider documentation for installation
+```
+
+## ðŸ§ª Usage & Demo â€” Backup & Disaster Recovery
+
+### Step 1: Create an on-demand backup
+```bash
+velero backup create demo-backup --include-namespaces demo-app
+velero backup describe demo-backup
+velero backup logs demo-backup
+```
+
+### Step 2: Schedule automated backups
+```bash
+kubectl apply -f backups/schedule-daily-full.yaml
+velero schedule get
+```
+
+### Step 3: Simulate a disaster
+```bash
+# Delete the entire namespace (simulating data loss)
+kubectl delete namespace demo-app
+kubectl get namespace demo-app  # Should be gone
+```
+
+### Step 4: Restore from backup
+```bash
+kubectl apply -f restores/restore-postgres-database.yaml
+# Or use Velero CLI:
+velero restore create --from-backup demo-backup
+velero restore describe demo-backup-restore
+# Verify the namespace and resources are back
+kubectl get all -n demo-app
+```
+
+### Step 5: Review runbooks
+Browse the `runbooks/` directory for operational procedures.
+
+## âœ… Verification
+
+| Check | Command | Expected |
+|-------|---------|----------|
+| Velero installed | `velero version` | Client and server versions |
+| Backup created | `velero backup get` | Backup in Completed phase |
+| Namespace deleted | `kubectl get ns demo-app` | Not found |
+| Restore successful | `velero restore get` | Restore in Completed phase |
+| Data recovered | `kubectl get all -n demo-app` | Original resources restored |
+
+```bash
+# Cleanup
+kind delete cluster --name dr-lab
+```
+
 ## 👨‍💻 Author
 
 *Built to demonstrate Site Reliability Engineering, RTO/RPO validation, and stateful Kubernetes operations.*
