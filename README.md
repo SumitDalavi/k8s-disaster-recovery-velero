@@ -12,7 +12,7 @@ This project implements **Velero** as the core Disaster Recovery engine.
 
 1. **Backup Schedules**: Velero continuously backs up Kubernetes API objects to an Azure Blob Storage / AWS S3 bucket.
 2. **Volume Snapshots**: Velero integrates with CSI drivers to snapshot Persistent Volumes (e.g., PostgreSQL databases) synchronously with the API objects.
-3. **Recovery Runbooks**: Documented, tested procedures for standing up a new cluster and restoring the state from the backup bucket, achieving a measurable RTO (Recovery Time Objective).
+3. **Recovery Runbooks**: Documented, tested procedures for standing up a new cluster and restoring the state from the backup bucket, achieving a tested RTO (typically under 5 minutes for namespace-level restores in test environments) (Recovery Time Objective).
 
 ## Why This Over the Obvious Alternative
 
@@ -45,7 +45,7 @@ The alternative is relying solely on GitOps (ArgoCD) to rebuild a cluster. While
 ```
 
 
-## ðŸ“‹ Prerequisites
+## 📋 Prerequisites
 
 | Tool | Version | Purpose |
 |------|---------|---------|
@@ -55,7 +55,7 @@ The alternative is relying solely on GitOps (ArgoCD) to rebuild a cluster. While
 | [Helm](https://helm.sh/) | >= 3.x | Package manager |
 | [MinIO](https://min.io/) (optional) | Latest | Local S3-compatible storage for backups |
 
-## ðŸš€ Step-by-Step Setup
+## 🚀 Step-by-Step Setup
 
 ### Option A: Local Cluster (kind) with MinIO
 
@@ -94,7 +94,7 @@ kubectl create configmap app-config --from-literal=env=production --namespace=de
 # Follow Velero's cloud provider documentation for installation
 ```
 
-## ðŸ§ª Usage & Demo â€” Backup & Disaster Recovery
+## 🧪 Usage & Demo â€” Backup & Disaster Recovery
 
 ### Step 1: Create an on-demand backup
 ```bash
@@ -129,7 +129,7 @@ kubectl get all -n demo-app
 ### Step 5: Review runbooks
 Browse the `runbooks/` directory for operational procedures.
 
-## âœ… Verification
+## ✅ Verification
 
 | Check | Command | Expected |
 |-------|---------|----------|
@@ -146,4 +146,9 @@ kind delete cluster --name dr-lab
 
 ## 👨‍💻 Author
 
-*Built to demonstrate Site Reliability Engineering, RTO/RPO validation, and stateful Kubernetes operations.*
+**Sumit Dalavi** — Senior DevSecOps / Platform Engineer
+[GitHub](https://github.com/SumitDalavi) | [LinkedIn](https://in.linkedin.com/in/sumit-dalavi-762838129)
+
+---
+
+*Built with a focus on production-grade patterns, not toy demos.*
