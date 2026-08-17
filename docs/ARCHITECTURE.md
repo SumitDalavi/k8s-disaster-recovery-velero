@@ -1,5 +1,17 @@
 # Architecture: Kubernetes Disaster Recovery
 
+## System Diagram
+The following Mermaid.js sequence diagram maps the core workflow and interactions:
+
+```mermaid
+sequenceDiagram
+    CronJob->>Velero: Trigger Backup
+Velero->>K8sAPI: Snapshot Resources
+Velero->>CSI: Snapshot Volumes
+Velero->>S3: Upload Archive
+```
+
+
 ## How Velero Works
 Velero consists of two components:
 1. **A command-line client (CLI)** that runs locally.
