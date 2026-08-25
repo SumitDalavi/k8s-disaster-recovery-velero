@@ -1,0 +1,12 @@
+apiVersion: velero.io/v1
+kind: BackupStorageLocation
+metadata:
+  name: aws-s3-backup-storage
+  namespace: velero
+spec:
+  provider: aws
+  objectStorage:
+    bucket: my-k8s-backups-bucket
+    prefix: cluster1
+  config:
+    region: us-east-1
