@@ -1,0 +1,41 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: velero-backup-alerts
+  namespace: velero
+  labels:
+    app: velero
+    prometheus: kube-prometheus
+spec:
+  groups:
+    - name: velero.backup
+      rules:
+        - alert: VeleroBackupFailed
+          expr: |
+            velero_backup_failure_total{schedule!=""} > 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Velero scheduled backup failed"
+            description: "Backup schedule {{ $labels.schedule }} has {{ $value }} failures. Check `velero backup get` and `velero backup logs`."
+
+        - alert: VeleroBackupMissing
+          expr: |
+            time() - velero_backup_last_successful_timestamp{schedule!=""} > 86400
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "No successful backup in 24h for schedule {{ $labels.schedule }}"
+            description: "Velero schedule {{ $labels.schedule }} hasn't produced a successful backup in over 24 hours."
+
+        - alert: VeleroBackupStorageLow
+          expr: |
+            velero_backup_items_total > 500
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: "Velero backup storage growing large ({{ $value }} items)"
+            description: "Consider reducing backup TTL or enabling backup compression."
