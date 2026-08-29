@@ -1,6 +1,7 @@
 # Kubernetes Disaster Recovery & Chaos Lab 🌋💾
 
-> A comprehensive Disaster Recovery architecture for Kubernetes using Velero, demonstrating RTO/RPO measurement, simulated cluster loss, and automated recovery runbooks.
+> **Maturity:** Lab / Reference Implementation
+> _A comprehensive Disaster Recovery architecture for Kubernetes using Velero, demonstrating RTO/RPO measurement, simulated cluster loss, and automated recovery runbooks._
 
 ## The Problem
 
@@ -149,6 +150,22 @@ kind delete cluster --name dr-lab
 **Sumit Dalavi** — Senior DevSecOps / Platform Engineer
 [GitHub](https://github.com/SumitDalavi) | [LinkedIn](https://in.linkedin.com/in/sumit-dalavi-762838129)
 
----
+## 📚 Documentation
 
-*Built with a focus on production-grade patterns, not toy demos.*
+- [Architecture](docs/ARCHITECTURE.md) — System diagram and component details
+- [RTO/RPO Drill Results](docs/rto_rpo_drill_results.md) — Measured performance metrics
+- [Runbook](docs/runbook.md) — Setup, commands, and expected outputs
+- [Decisions](docs/decisions.md) — ADRs for DR implementation
+- [Changelog](docs/changelog.md) — Change history
+
+## Mock Boundaries (Honest Scope)
+
+| What | Status | Details |
+|---|---|---|
+| Velero Engine | **Real** | Velero is installed and executing real backup/restore commands. |
+| Object Storage | **Simulated** | Using local `MinIO` instead of AWS S3 / Azure Blob Storage to avoid cloud costs. |
+| Volume Snapshots | **Simulated** | Demonstrating API backups; CSI Volume Snapshots require cloud-specific storage classes not present in standard `kind`. |
+
+## 🔗 Related Projects
+
+- [`chaos-slo-gameday`](../chaos-slo-gameday/) — Chaos engineering principles that complement DR drills.
