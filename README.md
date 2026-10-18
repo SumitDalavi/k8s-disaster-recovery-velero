@@ -3,6 +3,10 @@
 
 # Kubernetes Disaster Recovery & Chaos Lab 🌋💾
 
+[![CI Pipeline](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/SumitDalavi/k8s-disaster-recovery-velero)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/releases)
+[![Release Workflow](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/release.yml/badge.svg)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/release.yml)
+
 > **Maturity:** Lab / Reference Implementation
 > _A comprehensive Disaster Recovery architecture for Kubernetes using Velero, demonstrating RTO/RPO measurement, simulated cluster loss, and automated recovery runbooks._
 
@@ -147,6 +151,15 @@ Browse the `runbooks/` directory for operational procedures.
 # Cleanup
 kind delete cluster --name dr-lab
 ```
+
+## 🔒 Release & Security Verification
+
+Every tagged release (*.*.*) triggers an automated DevSecOps release workflow:
+1. **Automated Testing:** Runs pytest validation suite across backup and restore routines.
+2. **Container Image Build:** Builds the DR orchestrator container image (ghcr.io/sumitdalavi/k8s-disaster-recovery-velero:<tag>).
+3. **Vulnerability Scanning:** Scans the container image using [Aqua Security Trivy](https://github.com/aquasecurity/trivy-action) for HIGH and CRITICAL CVEs.
+4. **SBOM Generation:** Generates a Software Bill of Materials (SBOM) in SPDX JSON format (sbom.spdx.json) using [Anchore Syft](https://github.com/anchore/sbom-action).
+5. **GitHub Release Publishing:** Packages release notes and attaches sbom.spdx.json as a verifiable supply-chain asset.
 
 ## 👨‍💻 Author
 
