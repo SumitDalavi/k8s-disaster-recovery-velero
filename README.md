@@ -1,11 +1,14 @@
 > **NOTE:** This repository is an archival lab or partial prototype. It is not actively maintained and should not be used as a reference for production-grade deployments or performance benchmarks.
 
-
 # Kubernetes Disaster Recovery & Chaos Lab 🌋💾
 
 [![CI Pipeline](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/SumitDalavi/k8s-disaster-recovery-velero)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/releases)
+[![Release](https://img.shields.io/github/v/release/SumitDalavi/k8s-disaster-recovery-velero?color=0969da&label=release&logo=github)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/releases)
 [![Release Workflow](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/release.yml/badge.svg)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/actions/workflows/release.yml)
+[![GHCR Container](https://img.shields.io/badge/ghcr.io-v0.2.0-blue?logo=docker&logoColor=white)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/pkgs/container/k8s-disaster-recovery-velero)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org)
+[![SBOM](https://img.shields.io/badge/SBOM-SPDX%202.3-blueviolet?logo=spdx)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/releases/tag/v0.2.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 > **Maturity:** Lab / Reference Implementation
 > _A comprehensive Disaster Recovery architecture for Kubernetes using Velero, demonstrating RTO/RPO measurement, simulated cluster loss, and automated recovery runbooks._
@@ -51,7 +54,6 @@ The alternative is relying solely on GitOps (ArgoCD) to rebuild a cluster. While
 ├── docs/ARCHITECTURE.md
 └── README.md
 ```
-
 
 ## 📋 Prerequisites
 
@@ -154,7 +156,8 @@ kind delete cluster --name dr-lab
 
 ## 🔒 Release & Security Verification
 
-Every tagged release (*.*.*) triggers an automated DevSecOps release workflow:
+Every tagged release (
+*.*.*) triggers an automated DevSecOps release workflow:
 1. **Automated Testing:** Runs pytest validation suite across backup and restore routines.
 2. **Container Image Build:** Builds the DR orchestrator container image (ghcr.io/sumitdalavi/k8s-disaster-recovery-velero:<tag>).
 3. **Vulnerability Scanning:** Scans the container image using [Aqua Security Trivy](https://github.com/aquasecurity/trivy-action) for HIGH and CRITICAL CVEs.
