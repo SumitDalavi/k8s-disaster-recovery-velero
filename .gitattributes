@@ -1,0 +1,4 @@
+# GitHub Linguist Language Overrides
+# Enable YAML manifests to be counted in repository language statistics
+*.yaml linguist-detectable=true
+*.yml linguist-detectable=true
