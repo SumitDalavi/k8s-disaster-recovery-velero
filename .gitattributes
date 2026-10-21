@@ -2,3 +2,7 @@
 # Enable YAML manifests to be counted in repository language statistics
 *.yaml linguist-detectable=true
 *.yml linguist-detectable=true
+
+# Mark operational demo and verification scripts as documentation
+scripts/* linguist-documentation=true
+runbooks/* linguist-documentation=true
