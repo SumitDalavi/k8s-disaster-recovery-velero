@@ -8,8 +8,7 @@
 [![SBOM](https://img.shields.io/badge/SBOM-SPDX%202.3-blueviolet?logo=spdx)](https://github.com/SumitDalavi/k8s-disaster-recovery-velero/releases/tag/v0.2.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-> **Maturity:** Lab / Reference Implementation
-> _A comprehensive Disaster Recovery architecture for Kubernetes using Velero, demonstrating RTO/RPO measurement, simulated cluster loss, and automated recovery runbooks._
+> A comprehensive Disaster Recovery architecture for Kubernetes using Velero, demonstrating RTO/RPO measurement, simulated cluster loss, and automated recovery runbooks.
 
 ## The Problem
 
